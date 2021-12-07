@@ -3,9 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0' />
-    <title>INST377 Group 25 - Big 10 Colleges</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-    <link rel="stylesheet" href="/style.css">
+    <title><%= university_name %> - INST377 Group 25</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
+    <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
     <!-- Navigation -->
@@ -18,7 +19,7 @@
       <div class="navbar-menu">
         <div class="navbar-end">
           <a class="navbar-item" href="/">Home</a>
-          <a class="navbar-item" href="/">About Us</a>
+          <a class="navbar-item" href="/about.html">About Us</a>
         </div>
       </div>
     </nav>
@@ -33,8 +34,20 @@
         <div class="box has-background-primary">
           <h3 class="subtitle is-4">University Details</h3>
           <p class="subtitle is-6"><b>Location</b>: <%= univ_location %>, <%= univ_zip %></p>
-          <p class="subtitle is-6"><b>Requirements</b>: <em>...More data here</em></p>
-          <p class="subtitle is-6"><b>Test Scores</b>: <em>...More data here</em></p>
+          <p class="subtitle is-6 mb-0">
+            <b>Application Requirements</b>:
+          </p>
+          <ul class="mb-3">
+          <% if (coalition == "Yes") { %>
+            <li>- Coalition App</li>
+          <% } %>
+          <% if (common_app == "Yes") { %>
+            <li>- Common App</li>
+          <% } %>
+          <% if (required_test_score == "Yes") { %>
+            <li>- SAT/ATC Test Scores</li>
+          <% } %>
+          </ul>
 
           <a class="button is-white" href="#" target="_blank" rel="noreferrer">Visit University Site</a>
         </div>
