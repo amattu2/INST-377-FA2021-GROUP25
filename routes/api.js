@@ -93,8 +93,7 @@ router.get('/schools/:rank_id', async (request, response) => {
  * @author John I.
  */
 router.get('/schools/:rank_id/sat_scores', async (request, response) => {
-=======
- * Fetch School Reviews by Rank ID
+ /* Fetch School Reviews by Rank ID
  *
  * @author Alec M.
  * @date 2021-11-08 11:41:00
@@ -127,8 +126,67 @@ router.get('/schools/:rank_id/reviews', async (request, response) => {
   }
 });
 
+/**
+ * Create a new University Review
+ *
+ * @author Alec M.
+ * @date 2021-11-15 12:26:00
+ */
+router.post('/schools/:rank_id/review', async (request, response) => {
+  // Validate rank_id
+  const rank_id = parseInt(request.body.rank_id) || 0;
+  if (rank_id <= 0 || rank_id > 14) {
+    response.status(400);
+  }
+
+  // Validate Review
+  const review = (request.body.review || "").toString().substr(0, 1024) || "";
+  if (!review || review.length <= 0) {
+    response.status(400);
+  }
+
+  // Validate Rating
+  const rating = parseFloat(request.body.rating) || 0;
+  if (rating < 0 || rating > 5) {
+    response.status(400);
+  }
+
+  // Validate Grad Year
+  const grad_year = parseInt(request.body.graduation_year);
+  if (!grad_year || grad_year <= 1950 || grad_year >= 2030) {
+    response.status(400);
+  }
+
+  // Safely connect to database
+  try {
+    // Validate University ID
+    const u = await db.sequelizeDB.query(controllers.university.getUniversityName, {
+      replacements: { rank_id: rank_id },
+      type: sequelize.QueryTypes.SELECT
+    });
+    if (!u || u.length <= 0) {
+      response.status(400);
+    }
+
+    // Insert new data
+    const r = await db.sequelizeDB.query(controllers.reviews.postNewReview, {
+      replacements: { rank_id: rank_id, review: review, rating: rating, graduation_year: grad_year },
+      type: sequelize.QueryTypes.INSERT
+    });
+
+    // Send data
+    response.send("1");
+  } catch (e) {
+    // Debug
+    console.error(e);
+
+    // Send data
+    response.status(404);
+  }
+});
+
 router.get('/schools/:rank_id/univ_location', async (request, response) => {
->>>>>>> b38423f7fff4ee2b41aec120ec72ac29ed2c8dc6
+b38423f7fff4ee2b41aec120ec72ac29ed2c8dc6
   try {
     // Debug
     console.log('touched /schools/:rank_id/sat_scores with GET');
@@ -167,7 +225,7 @@ router.get('/schools/:rank_id/Admission_rate', async (request, response) => {
   }
 });
 
- * Get all average test scores
+ /* Get all average test scores
  *
  * @author John I.
  */
@@ -176,7 +234,7 @@ router.get('/test_scores', async (request, response) => {
     // Debug
     console.log('touched /test_scores with GET');
     // Fetch all test_scores
-    const d = await db.sequelizeDB.query(controllers.test_scores.getTestScores, {
+    const d = await db.sequelizeDB.query(controllers.test_scores.getSchoolInfo, {
       type: sequelize.QueryTypes.SELECT
     });
 
@@ -190,6 +248,7 @@ router.get('/test_scores', async (request, response) => {
     response.json({status: "failure", data: null, message: "unknown error"});
   }
 });
+
 
 
 
