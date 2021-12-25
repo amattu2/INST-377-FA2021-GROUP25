@@ -20,18 +20,6 @@ const FAILURE = 0;
 /*sorts filterData in suggestions bar according to SAT, tuition, or acceptance rate */
 function sortFilterData(filterData){
   // Close the dropdown menu if the user clicks outside of it
-  window.onclick = function(event) {
-    if (!event.target.matches('.dropbtn')) {
-      let dropdowns = document.getElementsByClassName('dropdown-content');
-      let i;
-      for (i = 0; i < dropdowns.length; i++) {
-        let openDropdown = dropdowns[i];
-        if (openDropdown.classList.contains('show')) {
-          openDropdown.classList.remove('show');
-        }
-      }
-    }
-  };
 
   if(filterData == null){
     return FAILURE;
@@ -227,6 +215,20 @@ function initSortButtons(){
                   
         
 }
+
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    let dropdowns = document.getElementsByClassName('dropdown-content');
+    let i;
+    for (i = 0; i < dropdowns.length; i++) {
+      let openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+};
+
 
 getCollegeData();
 initSortButtons();
